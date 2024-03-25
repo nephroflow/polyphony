@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class FiberTest < MiniTest::Test
+class FiberTest < Minitest::Test
   def test_spin_initial_state
     result = nil
     f = Fiber.current.spin { result = 42 }
@@ -856,7 +856,7 @@ class FiberTest < MiniTest::Test
   end
 end
 
-class MailboxTest < MiniTest::Test
+class MailboxTest < Minitest::Test
   def test_that_fiber_can_receive_messages
     msgs = []
     f = spin { loop { msgs << receive } }
@@ -1081,7 +1081,7 @@ class MailboxTest < MiniTest::Test
   end
 end
 
-class FiberControlTest < MiniTest::Test
+class FiberControlTest < Minitest::Test
   def test_await_multiple
     f1 = spin {
       snooze
@@ -1167,7 +1167,7 @@ class FiberControlTest < MiniTest::Test
   end
 end
 
-class SupervisionTest < MiniTest::Test
+class SupervisionTest < Minitest::Test
   def test_exception_during_termination
     f2 = nil
     f = spin do
@@ -1193,7 +1193,7 @@ class SupervisionTest < MiniTest::Test
   end
 end
 
-class RestartTest < MiniTest::Test
+class RestartTest < Minitest::Test
   def test_restart
     buffer = []
     f = spin {
@@ -1244,7 +1244,7 @@ class RestartTest < MiniTest::Test
   end
 end
 
-class ChildrenTerminationTest < MiniTest::Test
+class ChildrenTerminationTest < Minitest::Test
   def test_shutdown_all_children
     # TODO: check why this test fails when count = 1000
     count = 100
@@ -1262,7 +1262,7 @@ class ChildrenTerminationTest < MiniTest::Test
   end
 end
 
-class GracefulTerminationTest < MiniTest::Test
+class GracefulTerminationTest < Minitest::Test
   def test_graceful_termination
     buffer = []
     f = spin do
@@ -1326,7 +1326,7 @@ class GracefulTerminationTest < MiniTest::Test
   end
 end
 
-class DebugTest < MiniTest::Test
+class DebugTest < Minitest::Test
   def test_parking
     buf = []
     f = spin do

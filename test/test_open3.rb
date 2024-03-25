@@ -6,7 +6,7 @@ require_relative 'helper'
 
 require_relative 'open3/envutil'
 
-class TestOpen3 < MiniTest::Test
+class TestOpen3 < Minitest::Test
   RUBY = EnvUtil.rubybin
 
   def test_exit_status

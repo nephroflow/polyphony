@@ -46,7 +46,7 @@ module ::Kernel
   end
 end
 
-class MiniTest::Test
+class Minitest::Test
   def setup
     # trace "* setup #{self.name}"
     @__stamp = Time.now
@@ -118,7 +118,7 @@ module Minitest::Assertions
       if message
         msg = "#{message}\n#{msg}"
       end
-      raise MiniTest::Assertion, msg
+      raise Minitest::Assertion, msg
     end
   end
 end

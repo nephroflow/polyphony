@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class EventTest < MiniTest::Test
+class EventTest < Minitest::Test
   def test_that_event_receives_signal_across_threads
     count = 0
     a = Polyphony::Event.new

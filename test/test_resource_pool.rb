@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ResourcePoolTest < MiniTest::Test
+class ResourcePoolTest < Minitest::Test
   def test_resource_pool_limit
     resources = [+'a', +'b']
     pool = Polyphony::ResourcePool.new(limit: 2) { resources.shift }

@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class SpinTest < MiniTest::Test
+class SpinTest < Minitest::Test
   def test_that_spin_returns_a_fiber
     result = nil
     fiber = spin { result = 42 }
@@ -54,7 +54,7 @@ class SpinTest < MiniTest::Test
   end
 end
 
-class ExceptionTest < MiniTest::Test
+class ExceptionTest < Minitest::Test
   def test_cross_fiber_backtrace
     error = nil
     frames = []
@@ -101,7 +101,7 @@ class ExceptionTest < MiniTest::Test
   end
 end
 
-class MoveOnAfterTest < MiniTest::Test
+class MoveOnAfterTest < Minitest::Test
   def test_move_on_after
     t0 = monotonic_clock
     v = move_on_after(0.01) do
@@ -165,7 +165,7 @@ class MoveOnAfterTest < MiniTest::Test
   end
 end
 
-class CancelAfterTest < MiniTest::Test
+class CancelAfterTest < Minitest::Test
   def test_cancel_after
     t0 = monotonic_clock
 
@@ -261,7 +261,7 @@ class CancelAfterTest < MiniTest::Test
 end
 
 
-class SpinLoopTest < MiniTest::Test
+class SpinLoopTest < Minitest::Test
   def test_spin_loop
     buffer = []
     counter = 0
@@ -348,7 +348,7 @@ class SpinLoopTest < MiniTest::Test
   end
 end
 
-class SpinScopeTest < MiniTest::Test
+class SpinScopeTest < Minitest::Test
   def test_spin_scope
     queue = Queue.new
     buffer = {}
@@ -387,7 +387,7 @@ class SpinScopeTest < MiniTest::Test
   end
 end
 
-class ThrottledLoopTest < MiniTest::Test
+class ThrottledLoopTest < Minitest::Test
   def test_throttled_loop
     buffer = []
     counter = 0
@@ -421,7 +421,7 @@ class ThrottledLoopTest < MiniTest::Test
   end
 end
 
-class GlobalAPIEtcTest < MiniTest::Test
+class GlobalAPIEtcTest < Minitest::Test
   def test_after
     buffer = []
     f3 = after(0.3) { buffer << 3 }

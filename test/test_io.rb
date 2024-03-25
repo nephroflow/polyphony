@@ -3,7 +3,7 @@
 require_relative 'helper'
 require 'msgpack'
 
-class IOTest < MiniTest::Test
+class IOTest < Minitest::Test
   def setup
     super
     @i, @o = IO.pipe
@@ -551,7 +551,7 @@ class IOTest < MiniTest::Test
 
 end
 
-class IOWithRawBufferTest < MiniTest::Test
+class IOWithRawBufferTest < Minitest::Test
   def setup
     super
     @i, @o = IO.pipe
@@ -586,7 +586,7 @@ class IOWithRawBufferTest < MiniTest::Test
   end
 end
 
-class IOClassMethodsTest < MiniTest::Test
+class IOClassMethodsTest < Minitest::Test
   def test_binread
     s = IO.binread(__FILE__)
     assert_kind_of String, s
@@ -795,7 +795,7 @@ class IOClassMethodsTest < MiniTest::Test
   end
 end
 
-class IOExtensionsTest < MiniTest::Test
+class IOExtensionsTest < Minitest::Test
   def test_deflate
     i, o = IO.pipe
     r, w = IO.pipe
@@ -1234,7 +1234,7 @@ class IOExtensionsTest < MiniTest::Test
   end
 end
 
-class IOIssuesTest < MiniTest::Test
+class IOIssuesTest < Minitest::Test
   def test_issue_93
     # Write a file with 100 lines of 100 000 characters each
     File.open('/tmp/test.gz', 'w+') do |file|

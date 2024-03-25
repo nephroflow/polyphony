@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ScenarioTest < MiniTest::Test
+class ScenarioTest < Minitest::Test
   def test_monocrono
     count = 256
 

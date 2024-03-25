@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ThreadTest < MiniTest::Test
+class ThreadTest < Minitest::Test
   def test_thread_spin
     buffer = []
     f = spin { (1..3).each { |i| snooze; buffer << i } }
