@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class SuperviseTest < MiniTest::Test
+class SuperviseTest < Minitest::Test
   def test_supervise_with_block
     buffer = []
     f1 = spin(:f1) { receive }

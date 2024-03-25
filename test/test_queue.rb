@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class QueueTest < MiniTest::Test
+class QueueTest < Minitest::Test
   def setup
     super
     @queue = Polyphony::Queue.new
@@ -233,7 +233,7 @@ class QueueTest < MiniTest::Test
   end
 end
 
-class CappedQueueTest < MiniTest::Test
+class CappedQueueTest < Minitest::Test
   def setup
     super
     @queue = Polyphony::Queue.new

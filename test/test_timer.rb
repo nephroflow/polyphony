@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class TimerMoveOnAfterTest < MiniTest::Test
+class TimerMoveOnAfterTest < Minitest::Test
   def setup
     super
     @timer = Polyphony::Timer.new(resolution: 0.01)
@@ -56,7 +56,7 @@ class TimerMoveOnAfterTest < MiniTest::Test
   end
 end
 
-class TimerCancelAfterTest < MiniTest::Test
+class TimerCancelAfterTest < Minitest::Test
   def setup
     super
     @timer = Polyphony::Timer.new(resolution: 0.01)
@@ -136,7 +136,7 @@ class TimerCancelAfterTest < MiniTest::Test
   end
 end
 
-class TimerMiscTest < MiniTest::Test
+class TimerMiscTest < Minitest::Test
   def setup
     super
     @timer = Polyphony::Timer.new(resolution: 0.001)

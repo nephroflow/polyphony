@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class PipeTest < MiniTest::Test
+class PipeTest < Minitest::Test
   def test_pipe_creation
     pipe = Polyphony::Pipe.new
 

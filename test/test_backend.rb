@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class BackendTest < MiniTest::Test
+class BackendTest < Minitest::Test
   def setup
     super
     @prev_backend = Thread.current.backend
@@ -431,7 +431,7 @@ class BackendTest < MiniTest::Test
   end
 end
 
-class BackendChainTest < MiniTest::Test
+class BackendChainTest < Minitest::Test
   def setup
     super
     @prev_backend = Thread.current.backend

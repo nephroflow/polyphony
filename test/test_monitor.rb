@@ -4,7 +4,7 @@
 
 require_relative 'helper'
 
-class TestMonitor < MiniTest::Test
+class TestMonitor < Minitest::Test
   Queue = Polyphony::Queue
 
   def setup

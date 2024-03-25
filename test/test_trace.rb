@@ -5,7 +5,7 @@ __END__
 require_relative 'helper'
 require 'polyphony/core/debug'
 
-class TraceTest < MiniTest::Test
+class TraceTest < Minitest::Test
   def test_tracing_enabled
     events = []
 

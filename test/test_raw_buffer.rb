@@ -3,7 +3,7 @@
 require_relative 'helper'
 require 'msgpack'
 
-class RawBufferTest < MiniTest::Test
+class RawBufferTest < Minitest::Test
   def test_with_raw_buffer
     result = Polyphony.__with_raw_buffer__(64) do |b|
       assert_kind_of Integer, b

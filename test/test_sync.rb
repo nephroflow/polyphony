@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class MutexTest < MiniTest::Test
+class MutexTest < Minitest::Test
   def test_mutex
     buf = []
     lock = Polyphony::Mutex.new
@@ -156,7 +156,7 @@ class MutexTest < MiniTest::Test
   end
 end
 
-class MonitorTest < MiniTest::Test
+class MonitorTest < Minitest::Test
   def test_monitor
     m = Monitor.new
 

@@ -5,7 +5,7 @@ require 'fileutils'
 require 'msgpack'
 require 'localhost/authority'
 
-class TCPSocketTest < MiniTest::Test
+class TCPSocketTest < Minitest::Test
   def start_tcp_server_on_random_port(host = '127.0.0.1')
     port = rand(1100..60000)
     server = TCPServer.new(host, port)
@@ -175,7 +175,7 @@ class TCPSocketTest < MiniTest::Test
   end
 end
 
-class UNIXSocketTest < MiniTest::Test
+class UNIXSocketTest < Minitest::Test
   def test_unix_socket
     path = '/tmp/test_unix_socket'
     FileUtils.rm(path) rescue nil
@@ -202,7 +202,7 @@ class UNIXSocketTest < MiniTest::Test
   end
 end
 
-class TCPSocketWithRawBufferTest < MiniTest::Test
+class TCPSocketWithRawBufferTest < Minitest::Test
   def start_tcp_server_on_random_port(host = '127.0.0.1')
     port = rand(1100..60000)
     server = TCPServer.new(host, port)
@@ -252,7 +252,7 @@ class TCPSocketWithRawBufferTest < MiniTest::Test
   end
 end
 
-class UDPSocketTest < MiniTest::Test
+class UDPSocketTest < Minitest::Test
   def test_udp_recvfrom
     u1 = UDPSocket.new
     u1.bind('127.0.0.1', 0)
@@ -315,7 +315,7 @@ class UDPSocketTest < MiniTest::Test
 end
 
 if IS_LINUX
-  class HTTPClientTest < MiniTest::Test
+  class HTTPClientTest < Minitest::Test
 
     require 'json'
 
@@ -334,7 +334,7 @@ if IS_LINUX
   end
 end
 
-class SSLSocketTest < MiniTest::Test
+class SSLSocketTest < Minitest::Test
   def handle_http_request(socket)
     while (data = socket.gets("\n", 8192))
       if data.chomp.empty?

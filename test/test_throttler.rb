@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ThrottlerTest < MiniTest::Test
+class ThrottlerTest < Minitest::Test
   def test_throttler_with_rate
     t = Polyphony::Throttler.new(10)
     buffer = []

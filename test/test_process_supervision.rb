@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ProcessSupervisionTest < MiniTest::Test
+class ProcessSupervisionTest < Minitest::Test
   def test_process_supervisor_with_block
     i, o = IO.pipe
 

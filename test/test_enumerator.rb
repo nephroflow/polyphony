@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class EnumeratorTest < MiniTest::Test
+class EnumeratorTest < Minitest::Test
   def test_each_enumerator
     o = [1, 2, 3]
     e = o.each

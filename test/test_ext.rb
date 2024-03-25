@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ExceptionTest < MiniTest::Test
+class ExceptionTest < Minitest::Test
   def test_sanitize
     prev_disable = Exception.__disable_sanitized_backtrace__
     Exception.__disable_sanitized_backtrace__ = false
@@ -104,7 +104,7 @@ class ExceptionTest < MiniTest::Test
   end
 end
 
-class ProcessTest < MiniTest::Test
+class ProcessTest < Minitest::Test
   def test_process_detach
     pid = Polyphony.fork { sleep 0.05; exit! 42 }
     buffer = []
@@ -120,7 +120,7 @@ class ProcessTest < MiniTest::Test
   end
 end
 
-class KernelTest < MiniTest::Test
+class KernelTest < Minitest::Test
   def test_backticks
     buffer = []
     spin { 3.times { |i| buffer << i; snooze } }
@@ -235,7 +235,7 @@ class KernelTest < MiniTest::Test
   end
 end
 
-class TimeoutTest < MiniTest::Test
+class TimeoutTest < Minitest::Test
   def test_that_timeout_yields_to_other_fibers
     buffer = []
     spin { 3.times { |i| buffer << i; snooze } }

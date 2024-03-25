@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class ThreadPoolTest < MiniTest::Test
+class ThreadPoolTest < Minitest::Test
   def setup
     super
     @pool = Polyphony::ThreadPool.new

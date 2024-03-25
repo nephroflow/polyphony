@@ -2,7 +2,7 @@
 
 require_relative 'helper'
 
-class KernelTest < MiniTest::Test
+class KernelTest < Minitest::Test
   def test_system_method
     fn = '/tmp/test_system_method'
     FileUtils.rm(fn) rescue nil
