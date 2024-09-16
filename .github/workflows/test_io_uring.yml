@@ -13,7 +13,12 @@ jobs:
     name: >-
       ${{matrix.os}}, ${{matrix.ruby}}
 
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{matrix.os}}-${{matrix.ruby}}-io_uring
+      cancel-in-progress: true
+
     runs-on: ${{matrix.os}}
+
     steps:
     - name: Checkout repository and submodules
       uses: actions/checkout@v4
