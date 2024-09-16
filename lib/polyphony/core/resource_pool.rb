@@ -56,9 +56,10 @@ module Polyphony
     #
     # @param sym [Symbol] method name
     # @param args [Array<any>] method arguments
+    # @param kwargs [Hash] keyword arguments
     # @return [any] result of method call
-    def method_missing(sym, *args, &block)
-      acquire { |r| r.send(sym, *args, &block) }
+    def method_missing(sym, *args, **kwargs, &block)
+      acquire { |r| r.send(sym, *args, **kwargs, &block) }
     end
 
     # @!visibility private
