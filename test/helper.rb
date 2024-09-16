@@ -45,6 +45,14 @@ module ::Kernel
   def monotonic_clock
     ::Process.clock_gettime(::Process::CLOCK_MONOTONIC)
   end
+
+  def inspect_method_name_for(klass_name, method_name)
+    if RUBY_VERSION < '3.4.0'
+      "`#{method_name}'"
+    else
+      "'#{klass_name}##{method_name}'"
+    end
+  end
 end
 
 class MiniTest::Test
