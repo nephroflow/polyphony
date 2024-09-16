@@ -619,7 +619,7 @@ class FiberTest < MiniTest::Test
     f = spin(:baz) { :foo }
 
     expected = format(
-      '#<Fiber baz:%s %s:%d:in `test_inspect\' (runnable)>',
+      "#<Fiber baz:%s %s:%d:in #{inspect_method_name_for(self.class.name, __method__.to_s)} (runnable)>",
       f.object_id,
       __FILE__,
       spin_line_no
@@ -627,8 +627,9 @@ class FiberTest < MiniTest::Test
     assert_equal expected, f.inspect
 
     f.await
+
     expected = format(
-      '#<Fiber baz:%s %s:%d:in `test_inspect\' (dead)>',
+      "#<Fiber baz:%s %s:%d:in #{inspect_method_name_for(self.class.name, __method__.to_s)} (dead)>",
       f.object_id,
       __FILE__,
       spin_line_no
