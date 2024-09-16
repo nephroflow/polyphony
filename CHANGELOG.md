@@ -2,6 +2,7 @@
 
 - Remove support for Ruby 3.1 and 3.2
 - Add support for Ruby 3.3, 3.4, and 4.0
+- Forward keyword arguments in `Polyphony::ResourcePool`
 
 ## 1.6 2023-08-05
 
