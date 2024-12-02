@@ -28,19 +28,16 @@ class ::IO
     end
 
     # @!visibility private
-    EMPTY_HASH = {}.freeze
-
-    # @!visibility private
     alias_method :orig_foreach, :foreach
 
     # @!visibility private
-    def foreach(name, sep = $/, limit = nil, getline_args = EMPTY_HASH, &block)
+    def foreach(name, sep = $/, limit = nil, **kwargs, &block)
       if sep.is_a?(Integer)
         sep = $/
         limit = sep
       end
       File.open(name, 'r') do |f|
-        f.each_line(sep, limit, chomp: getline_args[:chomp], &block)
+        f.each_line(sep, limit, chomp: kwargs[:chomp], &block)
       end
     end
 
@@ -48,21 +45,21 @@ class ::IO
     alias_method :orig_read, :read
 
     # @!visibility private
-    def read(name, length = nil, offset = nil, opt = EMPTY_HASH)
+    def read(name, length = nil, offset = nil, **kwargs)
       if length.is_a?(Hash)
-        opt = length
+        kwargs = length
         length = nil
       end
-      File.open(name, opt[:mode] || 'r') do |f|
+      File.open(name, kwargs[:mode] || 'r') do |f|
         f.seek(offset) if offset
         length ? f.read(length) : f.read
       end
     end
 
     alias_method :orig_readlines, :readlines
-    def readlines(name, sep = $/, limit = nil, getline_args = EMPTY_HASH)
+    def readlines(name, sep = $/, limit = nil, **kwargs)
       File.open(name, 'r') do |f|
-        f.readlines(sep, **getline_args)
+        f.readlines(sep, **kwargs)
       end
     end
 
@@ -70,8 +67,8 @@ class ::IO
     alias_method :orig_write, :write
 
     # @!visibility private
-    def write(name, string, offset = nil, opt = EMPTY_HASH)
-      File.open(name, opt[:mode] || 'w') do |f|
+    def write(name, string, offset = nil, **kwargs)
+      File.open(name, kwargs[:mode] || 'w') do |f|
         f.seek(offset) if offset
         f.write(string)
       end
