@@ -416,8 +416,6 @@ class BackendTest < MiniTest::Test
   end
 
   def test_read_write_with_io_buffer
-    skip "Works only on Ruby >= 3.1" if RUBY_VERSION < '3.1'
-
     msg = 'Hello world'
     i, o = IO.pipe
     read_buffer = IO::Buffer.new(64)
