@@ -1,3 +1,7 @@
+## Unreleased
+
+- Remove support for Ruby 3.1
+
 ## 1.6 2023-08-05
 
 - Refactor exception instantiation
