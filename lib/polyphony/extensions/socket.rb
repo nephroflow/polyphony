@@ -237,7 +237,8 @@ class ::TCPSocket < ::IPSocket
   # @param remote_port [Integer] remote port
   # @param local_host [String] local host
   # @param local_port [Integer] local port
-  def initialize(remote_host, remote_port, local_host = nil, local_port = nil)
+  # @param open_timeout [Numeric] open timeout (Ruby 4.0+)
+  def initialize(remote_host, remote_port, local_host = nil, local_port = nil, open_timeout: nil)
     remote_addr = Addrinfo.tcp(remote_host, remote_port)
     @io = Socket.new remote_addr.afamily, Socket::SOCK_STREAM
     if local_host && local_port
@@ -248,7 +249,13 @@ class ::TCPSocket < ::IPSocket
     return unless remote_host && remote_port
 
     addr = Addrinfo.tcp(remote_host, remote_port)
-    @io.connect(addr)
+    if open_timeout
+      cancel_after(open_timeout) { @io.connect(addr) }
+    else
+      @io.connect(addr)
+    end
+  rescue Polyphony::Cancel
+    raise ::Timeout::Error, "execution expired"
   end
 
   # @!visibility private
