@@ -1,7 +1,7 @@
 ## Unreleased
 
 - Remove support for Ruby 3.1
-- Add support for Ruby 3.3 and 3.4
+- Add support for Ruby 3.3, 3.4, and 4.0
 
 ## 1.6 2023-08-05
 
