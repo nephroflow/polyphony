@@ -41,7 +41,11 @@ class ::OpenSSL::SSL::SSLSocket
   def fill_rbuff
     data = sysread(BLOCK_SIZE)
     if data
-      @rbuffer << data
+      if RUBY_VERSION < '4.0.0'
+        @rbuffer << data
+      else
+        @rbuffer.append_as_bytes(data)
+      end
     else
       @eof = true
     end
@@ -192,26 +196,19 @@ class ::OpenSSL::SSL::SSLServer
       end
     end
 
-    # STDOUT.puts 'SSLServer#accept'
     sock, = @svr.accept
-    # STDOUT.puts "- raw sock: #{sock.inspect}"
     begin
       ssl = OpenSSL::SSL::SSLSocket.new(sock, @ctx)
-      # STDOUT.puts "- ssl sock: #{ssl.inspect}"
       ssl.sync_close = true
       if @use_accept_worker
-        # STDOUT.puts "- send to accept worker"
         @accept_worker_fiber << [ssl, Fiber.current]
-        # STDOUT.puts "- wait for accept worker"
         r = receive
-        # STDOUT.puts "- got reply from accept worker: #{r.inspect}"
         r.invoke if r.is_a?(Exception)
       else
         ssl.accept
       end
       ssl
     rescue Exception => e
-      # STDOUT.puts "- accept exception: #{e.inspect}"
       if ssl
         ssl.close
       else
