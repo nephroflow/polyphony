@@ -4,6 +4,7 @@
 - Add support for Ruby 3.3, 3.4, and 4.0
 - Forward keyword arguments in `Polyphony::ResourcePool`
 - Use kwargs instead of empty hash argument in `IO`
+- Use `append_as_bytes` instead of `<<` in `OpenSSL::Buffering::Buffer`
 
 ## 1.6 2023-08-05
 
