@@ -5,6 +5,7 @@
 - Forward keyword arguments in `Polyphony::ResourcePool`
 - Use kwargs instead of empty hash argument in `IO`
 - Use `append_as_bytes` instead of `<<` in `OpenSSL::Buffering::Buffer`
+- Add `open_timeout:` argument to `TCPSocket.new`
 
 ## 1.6 2023-08-05
 
