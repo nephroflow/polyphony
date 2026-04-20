@@ -1,0 +1,40 @@
+---
+
+services:
+  ruby_3_3:
+    build:
+      context: .
+      dockerfile: 3.3.Dockerfile
+    image: polyphony:ruby-3.3
+    volumes:
+      - .:/app:cached
+      - bundle_3_3:/usr/local/bundle
+    tmpfs:
+      - /app/tmp:exec
+
+  ruby_3_4:
+    build:
+      context: .
+      dockerfile: 3.4.Dockerfile
+    image: polyphony:ruby-3.4
+    volumes:
+      - .:/app:cached
+      - bundle_3_4:/usr/local/bundle
+    tmpfs:
+      - /app/tmp:exec
+
+  ruby_4_0:
+    build:
+      context: .
+      dockerfile: 4.0.Dockerfile
+    image: polyphony:ruby-4.0
+    volumes:
+      - .:/app:cached
+      - bundle_4_0:/usr/local/bundle
+    tmpfs:
+      - /app/tmp:exec
+
+volumes:
+  bundle_3_3:
+  bundle_3_4:
+  bundle_4_0:
