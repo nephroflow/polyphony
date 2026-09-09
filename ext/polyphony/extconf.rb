@@ -25,7 +25,7 @@ def get_config
   config[:multishot_accept]   = combined_version >= 519
   config[:multishot_recv]     = combined_version >= 600
   config[:multishot_recvmsg]  = combined_version >= 600
-  config[:multishot_timeout]  = combined_version >= 640
+  config[:multishot_timeout]  = combined_version >= 604
   config[:submit_all_flag]    = combined_version >= 518
   config[:coop_taskrun_flag]  = combined_version >= 519
 
