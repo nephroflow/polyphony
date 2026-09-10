@@ -120,7 +120,7 @@ class ::Fiber
     return if @running == false
 
     value = exception.is_a?(Class) ? exception.new : exception
-    schedule value
+    schedule_or_interrupt(value)
     self
   end
 
@@ -147,7 +147,7 @@ class ::Fiber
     return if @running == false
 
     @graceful_shutdown = graceful
-    schedule Polyphony::Terminate.new
+    schedule_or_interrupt(Polyphony::Terminate.new)
     self
   end
 
@@ -168,9 +168,38 @@ class ::Fiber
   #   @return [Fiber] self
   def raise(*args)
     error = Exception.instantiate(*args)
-    schedule(error)
+    schedule_or_interrupt(error)
     self
   end
+
+  # Delivers the given exception to this fiber, either via this fiber's own
+  # native runqueue (the normal Polyphony mechanism, which resumes fibers via
+  # Fiber#transfer), or -- if this fiber is currently blocked inside an
+  # externally registered Fiber::Scheduler (e.g. via Kernel#sleep,
+  # Mutex#lock, IO#wait, etc. routed to Fiber.scheduler rather than
+  # Polyphony's own native backend) -- via that scheduler's own
+  # #fiber_interrupt hook instead.
+  #
+  # This distinction matters because a fiber currently suspended in a
+  # scheduler's resume/yield-based blocking call (e.g. via rb_fiber_yield,
+  # paired with rb_fiber_resume) cannot safely be resumed via
+  # Fiber#transfer: doing so corrupts its continuation state, causing
+  # subsequent Fiber.yield calls within that fiber to fail with errors such
+  # as "attempt to yield on a not resumed fiber". Delivering through the
+  # scheduler's own #fiber_interrupt instead lets it safely resume the
+  # fiber using whatever mechanism it originally used to suspend it.
+  #
+  # @param exception [Exception] exception to deliver
+  # @return [void]
+  def schedule_or_interrupt(exception)
+    scheduler = thread == Thread.current ? Fiber.scheduler : nil
+    if scheduler && scheduler.respond_to?(:blocking?) && scheduler.respond_to?(:fiber_interrupt) && scheduler.blocking?(self)
+      scheduler.fiber_interrupt(self, exception)
+    else
+      schedule(exception)
+    end
+  end
+  private :schedule_or_interrupt
 
   # Adds an interjection to the fiber. The current operation undertaken by the
   # fiber will be interrupted, and the given block will be executed, and the
