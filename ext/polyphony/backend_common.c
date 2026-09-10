@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include "ruby.h"
 #include "ruby/io.h"
+#include "ruby/fiber/scheduler.h"
 #include "polyphony.h"
 #include "backend_common.h"
 #ifdef HAVE_RUBY_IO_BUFFER_H
@@ -9,6 +10,46 @@
 #endif
 
 VALUE cBackend;
+
+static ID ID_blocking_p;
+
+// Some fibers may be resumed via Ruby's own externally-registered
+// Fiber::Scheduler (e.g. registered with Fiber.set_scheduler), rather than
+// through Polyphony's own fiber management, whenever Ruby core delegates a
+// blocking operation (such as a blocking IO#write, e.g. one performed by a
+// logger writing to a full pipe) directly to that scheduler on Polyphony's
+// behalf. Such a fiber is suspended via rb_fiber_yield, paired with
+// rb_fiber_resume -- not via Fiber#transfer, which is Polyphony's own,
+// symmetric fiber-switching mechanism.
+//
+// If backend_base_switch_fiber were to unconditionally transfer into such a
+// fiber (as it does for all other fibers managed by Polyphony), the
+// fiber's resume/yield continuation state would be corrupted, causing a
+// subsequent Fiber.yield call within that fiber to fail with "attempt to
+// yield on a not resumed fiber" (FiberError). To avoid this, we check
+// whether the fiber is currently blocked in the thread's registered
+// scheduler (via the scheduler's own #blocking? query, if it supports one),
+// and if so, resume it via rb_fiber_resume instead of FIBER_TRANSFER.
+//
+// Note: we deliberately use rb_fiber_scheduler_get() here, not
+// rb_fiber_scheduler_current(). The latter returns nil whenever the
+// *calling* fiber (i.e. whichever Polyphony fiber happens to be driving
+// this switch, not the target fiber) is a "blocking" fiber -- which is
+// true for virtually all Polyphony-managed fibers, since Polyphony does
+// not create its own fibers with blocking: false. rb_fiber_scheduler_get()
+// instead returns whatever scheduler was registered for the thread via
+// Fiber.set_scheduler, regardless of the calling fiber's blocking status,
+// which is what we actually need in order to look up the target fiber's
+// blocked state.
+static int fiber_blocked_in_external_scheduler(VALUE fiber) {
+  VALUE scheduler = rb_fiber_scheduler_get();
+  if (scheduler == Qnil) return 0;
+
+  if (!ID_blocking_p) ID_blocking_p = rb_intern("blocking?");
+  if (!rb_respond_to(scheduler, ID_blocking_p)) return 0;
+
+  return RTEST(rb_funcall(scheduler, ID_blocking_p, 1, fiber));
+}
 
 inline void backend_base_initialize(struct Backend_base *base) {
   runqueue_initialize(&base->runqueue);
@@ -124,8 +165,12 @@ VALUE backend_base_switch_fiber(VALUE backend, struct Backend_base *base) {
   rb_ivar_set(next.fiber, ID_ivar_runnable, Qnil);
   RB_GC_GUARD(next.fiber);
   RB_GC_GUARD(next.value);
-  return (next.fiber == current_fiber) ?
-    next.value : FIBER_TRANSFER(next.fiber, next.value);
+  if (next.fiber == current_fiber) return next.value;
+
+  if (unlikely(fiber_blocked_in_external_scheduler(next.fiber)))
+    return rb_fiber_resume(next.fiber, 1, &next.value);
+
+  return FIBER_TRANSFER(next.fiber, next.value);
 }
 
 void backend_base_schedule_fiber(VALUE thread, VALUE backend, struct Backend_base *base, VALUE fiber, VALUE value, int prioritize) {
